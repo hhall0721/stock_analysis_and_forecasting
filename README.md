@@ -35,12 +35,3 @@ One technical note worth keeping: merging OXM/XRT/GSPC (equity data) with ^TNX (
 - The regression coefficients aren't directly comparable across predictors yet, since GSPC values sit in the thousands and TNX values are single digits. Standardizing predictors (mean 0, std 1) before comparing coefficients is the next step.
 - Given the 0.75 correlation between GSPC and TNX, a VIF (variance inflation factor) check would help quantify how much multicollinearity is distorting the regression.
 
-## How to run
-
-```bash
-pip install yfinance pandas scikit-learn matplotlib
-python ConnectedPlanningModel.py
-python Duckhorn.py
-python TommyBahama.py
-python TommyBahama2.py
-```
