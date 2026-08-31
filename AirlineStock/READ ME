@@ -1,17 +1,33 @@
 Airline Stock Analysis
 
-Analysis of stock price data for four major U.S. airlines (Alaska, Delta, United, Southwest) using data pulled from Yahoo Finance. The project moves through data collection, SQL storage and querying, correlation analysis, and three different forecasting approaches (linear regression, polynomial regression, and ARIMA), plus a Monte Carlo simulation for future price ranges.
-Tools
+Analysis of stock price data for four major U.S. airlines (Alaska, Delta, United, Southwest) using data pulled from Yahoo Finance. 
+The project moves through data collection, SQL storage and querying, correlation analysis, 
+and three different forecasting approaches (linear regression, polynomial regression, and ARIMA), 
+plus a Monte Carlo simulation for future price ranges.
 
-Python, yfinance, pandas, SQLite, scikit-learn, statsmodels, seaborn, matplotlib, numpy
+Tools: Python, yfinance, pandas, SQLite, scikit-learn, statsmodels, seaborn, matplotlib, numpy
 
 What each script does
-Project1.py - Pulls one year of daily closing prices for ALK, DAL, UAL, and LUV, builds a binary label for whether the next day's close is higher than today's, and trains a logistic regression classifier to predict direction from price alone.
-Project2.py - Reshapes the price data from wide to long format and loads it into a SQLite database (airlines.db). Builds a second table with company metadata (name, headquarters, hub airport) and joins the two tables to compute average closing price per airline.
-Project3.py - Computes and visualizes the correlation between the four airlines' stock prices (airline_correlation_heatmap.png). Compares three forecasting models on Alaska Airlines (ALK) price: linear regression, degree-4 polynomial regression, and ARIMA.
-Project4.py - Focuses on Alaska Airlines specifically. Fits a linear trend line, plots a 30-day moving average against actual price (alaska_stock_trend.png), and runs a Monte Carlo simulation using geometric Brownian motion (500 simulated 30-day price paths) to estimate a range for where the price could land (alaska_monte_carlo.png).
+
+Project1.py - Pulls one year of daily closing prices for ALK, DAL, UAL, and LUV, builds a binary label for whether the next day's close is higher 
+than today's, and trains a logistic regression classifier to predict direction from price alone.
+
+Project2.py - Reshapes the price data from wide to long format and loads it into a SQLite database (airlines.db). 
+Builds a second table with company metadata (name, headquarters, hub airport) and joins the two tables to compute 
+average closing price per airline.
+
+Project3.py - Computes and visualizes the correlation between the four airlines' stock prices (airline_correlation_heatmap.png). 
+Compares three forecasting models on Alaska Airlines (ALK) price: linear regression, degree-4 polynomial regression, and ARIMA.
+Project4.py - Focuses on Alaska Airlines specifically. Fits a linear trend line, plots a 30-day moving average against actual price 
+(alaska_stock_trend.png), and runs a Monte Carlo simulation using geometric Brownian motion (500 simulated 30-day price paths) 
+to estimate a range for where the price could land (alaska_monte_carlo.png).
 
 Results
-The logistic regression classifier in Project1 hit 49.3% accuracy against a 50.7% majority-class baseline, meaning it performed slightly worse than just guessing "up" every day. This isn't a surprise: closing price alone doesn't carry much predictive signal for next-day direction. A real attempt at this would need features like volume, lagged returns, or momentum indicators.
-In Project3, the ARIMA(30,1,0) model reduced mean squared error by about 59% compared to the linear regression baseline on the test window. That's a meaningful improvement, but the ARIMA order (30 lag terms) is high relative to the size of the training set, so this result should be read as "ARIMA captured recent price behavior better on this particular window" rather than a validated, generalizable forecasting edge.
-The Monte Carlo simulation in Project4 is the most statistically grounded piece here. It uses the correct GBM drift adjustment (subtracting half the variance) rather than a naive random walk, and produces a 90% range for the simulated 30-day-ahead price instead of a single point estimate.
+The logistic regression classifier in Project1 hit 49.3% accuracy against a 50.7% majority-class baseline, meaning it performed 
+slightly worse than just guessing "up" every day. This isn't a surprise: closing price alone doesn't carry much predictive signal 
+for next-day direction. A real attempt at this would need features like volume, lagged returns, or momentum indicators.
+In Project3, the ARIMA(30,1,0) model reduced mean squared error by about 59% compared to the linear regression baseline on the test window. 
+That's a meaningful improvement, but the ARIMA order (30 lag terms) is high relative to the size of the training set, so this result should 
+be read as "ARIMA captured recent price behavior better on this particular window" rather than a validated, generalizable forecasting edge.
+The Monte Carlo simulation in Project4 is the most statistically grounded piece here. It uses the correct GBM drift adjustment 
+(subtracting half the variance) rather than a naive random walk, and produces a 90% range for the simulated 30-day-ahead price instead of a single point estimate.
