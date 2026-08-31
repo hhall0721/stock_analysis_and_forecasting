@@ -1,38 +1,14 @@
-Brand Data Analysis
+Stock Analysis and Forecasting:
 
-Stock and business analysis for two companies with product lines tied to broader consumer trends: Constellation Brands (STZ), a wine and spirits company, and Oxford Industries (OXM), 
-the parent company of Tommy Bahama. The Constellation piece grew out of prep work for a meeting with Paul Finn at Duckhorn Portfolio (a wine producer that went private in 2024). 
-The OXM piece tests whether macro and sector factors actually explain a mid-cap apparel stock's price movement.
+A collection of stock market analysis and forecasting projects, built while learning to combine financial data, SQL, and statistical modeling. Some of this started as general practice, some grew out of real prep work (see BrandData), but all of it follows the same core loop: pull price data, ask a specific question about it, and check whether the model actually answers that question or just looks like it does.
 
-Tools: Python, yfinance, pandas, SQLite, scikit-learn, matplotlib
+AirlineStock
+Four scripts analyzing Alaska, Delta, United, and Southwest stock prices: a logistic regression classifier for next-day price direction, a SQL pipeline storing and joining price and company data, a correlation and forecasting comparison (linear, polynomial, ARIMA), and a Monte Carlo simulation using geometric Brownian motion to estimate a 90% confidence range for Alaska Airlines' price 30 days out.
+Full writeup
 
-1. ConnectedPlanningModel.py
+BrandData
+Stock and business analysis for Constellation Brands (STZ) and Oxford Industries (OXM, parent of Tommy Bahama), including a regional demand consolidation model built for meeting prep with a wine industry contact, and a multifactor regression testing whether market-wide and sector factors explain OXM's stock price (they mostly don't, R-squared of 0.037, which points to company-specific fundamentals instead).
+Full writeup
 
-A simple function estimating inventory cost and staffing cost across a range of sales forecasts, plotted against total cost (sales_forecast.png). Built as general planning context for the Duckhorn meeting rather than tied to any specific company's real cost structure.
-Duckhorn.py
-Two pieces:
--STZ stock price. One year of Constellation Brands closing prices, plotted with a 30-day moving average (stz_stock_price.png, stz_stock_price_moving_average.png).
--Regional demand consolidation. Builds a SQLite database (demand_planning.db) with a demand forecast table by U.S. Census region (South, West, Northeast, Midwest), using regional wine consumption proportions from NIAAA data. Consolidates the four regions into monthly totals: January at 36,000 units, February at 36,800 units.
-
-2. TommyBahama.py
-
-Two pieces:
--OXM stock price. One year of Oxford Industries closing prices with a 30-day moving average (oxm_stock_price.png, oxm_stock_price_moving_average.png).
--Tommy Bahama Food & Beverage segment. Looked at publicly available yearly and Q1 revenue for the segment (tommy_bahama_food_beverage_yearly_revenue.png, tommy_bahama_food_beverage_first_quarter_revenue.png). Yearly revenue grew about 11% from 2022 to 2025, but Q1 2025 revenue dropped about 2.85% from Q1 2024, raising the question of whether the segment's growth was front-loaded in 2022-2024 or whether there's a seasonal effect at play.
-
- 3. TommyBahama2.py
-
-Multifactor regression testing whether OXM's price can be explained by broader retail (XRT), the S&P 500 (^GSPC), and the 10-year Treasury yield (^TNX). The correlation matrix showed OXM correlates weakly with all three predictors (0.18 to 0.21), while ^GSPC and ^TNX are correlated with each other at 0.75, a multicollinearity flag. The regression's R-squared came out to 0.037, meaning these macro and sector factors explain about 4% of OXM's price movement. Read plainly: broad market conditions don't predict this stock well, which points toward company-specific fundamentals (the F&B segment slowdown, for instance) mattering more than the macro backdrop.
-One technical note worth keeping: merging OXM/XRT/GSPC (equity data) with ^TNX (bond yield data) initially returned zero overlapping rows because the two data sources tag timestamps with different UTC offsets, even for the "same" date. Stripping timezone info with .tz_localize(None) before the merge fixed it silently, which is the kind of bug that doesn't throw an error and is easy to miss.
-
-Known limitations / next steps
--The regression coefficients aren't directly comparable across predictors yet, since GSPC values sit in the thousands and TNX values are single digits. Standardizing predictors (mean 0, std 1) before comparing coefficients is the next step.
--Given the 0.75 correlation between GSPC and TNX, a VIF (variance inflation factor) check would help quantify how much multicollinearity is distorting the regression.
-
-How to run:
-pip install yfinance pandas scikit-learn matplotlib
-python ConnectedPlanningModel.py
-python Duckhorn.py
-python TommyBahama.py
-python TommyBahama2.py
+Tools used across both: Python, yfinance, pandas, SQLite, scikit-learn, statsmodels, matplotlib, seaborn, numpy
 
